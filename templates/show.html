@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block main %}
+<main class="cardgrid">
+  {% for card in cards -%}
+  <figure {% if card.faces|length>
+    1 %}class="doublefaced" {% endif %} ondblclick="window.location.href='{{ card.change_url }}'">
+    <div class="cards">
+      {% for face in card.faces -%}
+      <div class="card">
+        <img class="preview" loading="lazy" src="{{ face.img_preview }}" />
+        <div class="popup">
+          <img loading="lazy" src="{{ face.img_large }}" />
+        </div>
+      </div>
+      {% endfor -%}
+    </div>
+    <figcaption>
+      {{ card.name }}{% if card.alternatives > 0 %} ({{ card.alternatives }} alternatives){% endif %}
+    </figcaption>
+  </figure>
+  {% endfor -%}
+</main>
+{% endblock -%}
