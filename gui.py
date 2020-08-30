@@ -16,17 +16,16 @@ def start():
 
         decklist_file = request.files['decklist_file']
         if decklist_file.filename != '':
-            decklist, ok = parse_decklist_stream(TextIOWrapper(decklist_file))
+            decklist, ok, warnings = parse_decklist_stream(TextIOWrapper(decklist_file))
         elif request.form['decklist'] != '':
-            decklist, ok = parse_decklist_stream(StringIO(request.form['decklist']))
+            decklist, ok, warnings = parse_decklist_stream(StringIO(request.form['decklist']))
         else:
             flash('No decklist provided')
             return redirect(request.url)
 
         if not ok:
-            for e in decklist.entries:
-                for warning in e.warnings:
-                    flash(warning)
+            for _, warning in warnings:
+                flash(warning)
         elif len(decklist.cards) == 0:
             flash('Decklist is empty')
             ok = False
