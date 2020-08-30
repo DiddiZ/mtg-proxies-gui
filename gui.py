@@ -104,22 +104,13 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description='Starts a local webserver providing a GUI.')
-    parser.add_argument('decklist', help='a decklist file (default: %(default)s)', nargs='?', default=None)
     parser.add_argument('--port', help='output format (default: %(default)s)', type=int, default=5000)
     args = parser.parse_args()
 
-    # Parse decklist
-    if args.decklist is not None:
-        decklist, ok = parse_decklist(args.decklist)
-        if not ok:
-            print("Decklist contains invalid card names. Fix errors above before reattempting.")
-            quit()
-
-        print("Found %d cards in total with %d unique cards." % (
-            decklist.total_count,
-            decklist.total_count_unique,
-        ))
+    print("Initializing database ...")
+    scryfall.get_cards(id="")  # Dummy query
 
     app.secret_key = os.urandom(24)
     webbrowser.open(f'http://127.0.0.1:{args.port}/start')
+    print("Starting webserver ...")
     app.run(port=args.port)
