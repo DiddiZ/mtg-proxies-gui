@@ -1,4 +1,4 @@
-{% extends "layout.html" %}{% block head %} {% if idx %}
+{% extends "layout.html" %}{% block head %}{% if idx %}
 <script>
   $(function () {
     $("#card{{ idx }}")[0].scrollIntoView({
@@ -15,15 +15,18 @@
     1 %}class="doublefaced" {% endif %}>
     <div class="cards">
       {% for face in card.faces -%}
-      <a class="card" href="{{ card.change_url }}">
+      {% if card.alternatives > 0 %}<a class="card" href="{{ card.change_url }}">{% else %}<div class="card">{% endif %}
         <img id="card{{ card.idx }}" class="preview" loading="lazy" src="{{ face.img_preview }}" />
         <div class="popup">
           <img loading="lazy" src="{{ face.img_large }}" />
         </div>
-      </a>
+      {% if card.alternatives > 0 %}</a>{% else %}</div>{% endif %}
       {% endfor -%}
     </div>
-    <figcaption>{{ card.name }}{% if card.alternatives > 0 %} ({{ card.alternatives }} alternatives){% endif %}</figcaption>
+    {%- if card.alternatives > 0 %}
+    <div class="alternatives">{{card.alternatives}}</div>
+    {% endif -%}
+    <figcaption>{{ card.name }}</figcaption>
   </figure>
   {% endfor -%}
 </main>

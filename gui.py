@@ -20,22 +20,24 @@ def start():
         elif request.form['decklist'] != '':
             decklist, ok, warnings = parse_decklist_stream(StringIO(request.form['decklist']))
         else:
-            flash('No decklist provided')
+            flash('ERROR: No decklist provided')
             return redirect(request.url)
 
         if not ok:
             for _, warning in warnings:
                 flash(warning)
         elif len(decklist.cards) == 0:
-            flash('Decklist is empty')
+            flash('ERROR: Decklist is empty')
             ok = False
 
-        session['decklist'] = decklist
-        session['decklist_ok'] = ok
         if ok:
+            session['decklist'] = decklist
+            session['alternatives'] = [scryfall.recommend_print(card, mode="choices") for card in decklist.cards]
             return redirect(url_for('show'))
+        decklist_str = format(decklist, "arena")
+    else:
+        decklist_str = ""
 
-    decklist_str = format(session['decklist'], "arena") if 'decklist' in session else ""
     warnings = []
     errors = []
     for message in get_flashed_messages():
@@ -57,9 +59,8 @@ def show():
     if 'decklist' not in session:
         return Response("Missing decklist in session", status=201)
 
-    from tqdm import tqdm
     cards = []
-    for i, card in tqdm(enumerate(session['decklist'].cards)):
+    for i, card in enumerate(session['decklist'].cards):
         faces = [
             {
                 "img_preview": image_uri['normal'],
@@ -71,7 +72,7 @@ def show():
                 "name": f"{card['name']} ({card['set'].upper()}) {card['collector_number']}",
                 "change_url": url_for("choice", idx=i),
                 "faces": faces,
-                "alternatives": len(scryfall.recommend_print(card, mode="choices")) - 1,
+                "alternatives": len(session['alternatives'][i]) - 1,
                 "idx": i,
             }
         )
