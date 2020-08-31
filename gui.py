@@ -71,18 +71,19 @@ def show():
                 "name": f"{card['name']} ({card['set'].upper()}) {card['collector_number']}",
                 "change_url": url_for("choice", idx=i),
                 "faces": faces,
-                "alternatives": len(scryfall.recommend_print(card, mode="choices")) - 1
+                "alternatives": len(scryfall.recommend_print(card, mode="choices")) - 1,
+                "idx": i,
             }
         )
 
-    return render_template('show.html', cards=cards)
+    return render_template('show.html', cards=cards, idx=request.args.get('idx'))
 
 
 @app.route('/choice/<int:idx>')
 def choice(idx):
     cur = session['decklist'].cards[idx]
     cards = []
-    for i, card in enumerate(scryfall.recommend_print(cur["name"], mode="choices")):
+    for i, card in enumerate(scryfall.recommend_print(cur, mode="choices")):
         image_uris = [face["image_uris"] for face in scryfall.get_faces(card)]
         faces = [{
             "img_preview": image_uri['normal'],
@@ -91,7 +92,7 @@ def choice(idx):
         cards.append(
             {
                 "name": f"{card['name']} ({card['set'].upper()}) {card['collector_number']}",
-                "change_url": url_for("show"),
+                "change_url": url_for("show", idx=idx),
                 "faces": faces,
             }
         )

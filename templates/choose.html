@@ -2,7 +2,7 @@
 <main class="cardgrid">
   {% for card in cards -%}
   <figure {% if card.faces|length>
-    1 %}class="doublefaced" {% endif %} ondblclick="window.history.go(-1)">
+    1 %}class="doublefaced" {% endif %} ondblclick="window.location.href='{{ card.change_url }}'">
     <div class="cards">
       {% for face in card.faces -%}
       <div class="card">
