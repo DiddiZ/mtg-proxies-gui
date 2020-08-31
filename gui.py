@@ -92,12 +92,22 @@ def choice(idx):
         cards.append(
             {
                 "name": f"{card['name']} ({card['set'].upper()}) {card['collector_number']}",
-                "change_url": url_for("show", idx=idx),
+                "change_url": url_for("update", idx=idx, update=i) if i > 0 else url_for("show", idx=idx),
                 "faces": faces,
             }
         )
 
     return render_template('choose.html', cards=cards)
+
+
+@app.route('/update/<int:idx>/<int:update>')
+def update(idx, update):
+    # Replace print in  decklist
+    entry = session['decklist'].cards[idx]
+    entry.card = scryfall.recommend_print(entry.card, mode="choices")[update]
+
+    # Return to overview
+    return redirect(url_for("show", idx=idx))
 
 
 if __name__ == "__main__":
