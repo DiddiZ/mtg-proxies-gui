@@ -35,6 +35,8 @@ def start():
             session['alternatives'] = [scryfall.recommend_print(card, mode="choices") for card in decklist.cards]
             return redirect(url_for('show'))
         decklist_str = format(decklist, "arena")
+    elif 'decklist' in session:
+        decklist_str = format(session['decklist'], "arena")
     else:
         decklist_str = ""
 
@@ -49,6 +51,7 @@ def start():
     return render_template(
         'start.html',
         decklist=decklist_str,
+        decklist_ok='decklist' in session,
         warnings=warnings,
         errors=errors,
     )
@@ -57,7 +60,7 @@ def start():
 @app.route('/show')
 def show():
     if 'decklist' not in session:
-        return Response("Missing decklist in session", status=201)
+        return redirect(url_for("start"))
 
     cards = []
     for i, card in enumerate(session['decklist'].cards):
@@ -77,11 +80,14 @@ def show():
             }
         )
 
-    return render_template('show.html', cards=cards, idx=request.args.get('idx'))
+    return render_template('show.html', cards=cards, idx=request.args.get('idx'), decklist_ok=True)
 
 
 @app.route('/choice/<int:idx>')
 def choice(idx):
+    if 'decklist' not in session:
+        return redirect(url_for("start"))
+
     cur = session['decklist'].cards[idx]
     cards = []
     for i, card in enumerate(scryfall.recommend_print(cur, mode="choices")):
@@ -98,7 +104,7 @@ def choice(idx):
             }
         )
 
-    return render_template('choose.html', cards=cards)
+    return render_template('choose.html', cards=cards, decklist_ok=True)
 
 
 @app.route('/update/<int:idx>/<int:update>')
@@ -107,8 +113,23 @@ def update(idx, update):
     entry = session['decklist'].cards[idx]
     entry.card = scryfall.recommend_print(entry.card, mode="choices")[update]
 
+    # Update cache
+    session['alternatives'][idx] = scryfall.recommend_print(entry, mode="choices")
+
     # Return to overview
     return redirect(url_for("show", idx=idx))
+
+
+@app.route('/download')
+def download():
+    if 'decklist' not in session:
+        return redirect(url_for("start"))
+
+    return render_template(
+        'download.html',
+        decklist=format(session['decklist'], "arena"),
+        decklist_ok=True,
+    )
 
 
 if __name__ == "__main__":

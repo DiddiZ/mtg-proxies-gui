@@ -5,8 +5,14 @@
     <link rel="stylesheet" type="text/css" href="/static/mtg-proxies.css" />
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/18007fcf82.js" crossorigin="anonymous"></script>
     {% block head %}{% endblock -%}
   </head>
+  <nav>
+    <a class="naventry" href="start"><i class="far fa-list-alt fa-fw"></i></a>
+    <a class="naventry{% if not decklist_ok %} disabled{% endif %}" href="show"><i class="far fa-images fa-fw"></i></a>
+    <a class="naventry{% if not decklist_ok %} disabled{% endif %}" href="download"><i class="fas fa-download fa-fw"></i></a>
+  </nav>
   <body>
     {% block main %}{% endblock -%}
   </body>

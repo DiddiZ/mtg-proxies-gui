@@ -25,12 +25,10 @@
 		}).submit(function(e) {
 			$form.addClass('waiting');
 		});
-		
-		$textarea = $('.deckupload textarea')[0]
-		$textarea.bind('input propertychange', function() {
-			$textarea.height($textarea.scrollHeight);
-		});
 	})
+	$(function () {
+		$("#decklist").height($("#decklist")[0].scrollHeight);
+	});
 </script>
 {% endblock -%}
 

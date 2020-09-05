@@ -1,0 +1,13 @@
+{% extends "layout.html" %} {% block head %}
+<script>
+  $(function () {
+    $("#decklist").height($("#decklist")[0].scrollHeight);
+  });
+</script>
+{% endblock -%} {% block main %}
+<main>
+  <div style="max-width: 800px; margin: auto">
+    <textarea id="decklist" name="decklist" readonly>{{ decklist }}</textarea>
+  </div>
+</main>
+{% endblock %}
