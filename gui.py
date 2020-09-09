@@ -99,7 +99,7 @@ def choice(idx):
         cards.append(
             {
                 "name": f"{card['name']} ({card['set'].upper()}) {card['collector_number']}",
-                "change_url": url_for("update", idx=idx, update=i) if i > 0 else url_for("show", idx=idx),
+                "change_url": url_for("update", idx=idx, update=card['id']) if i > 0 else url_for("show", idx=idx),
                 "faces": faces,
             }
         )
@@ -107,11 +107,11 @@ def choice(idx):
     return render_template('choose.html', cards=cards, decklist_ok=True)
 
 
-@app.route('/update/<int:idx>/<int:update>')
+@app.route('/update/<int:idx>/<update>')
 def update(idx, update):
     # Replace print in  decklist
     entry = session['decklist'].cards[idx]
-    entry.card = scryfall.recommend_print(entry.card, mode="choices")[update]
+    entry.card = scryfall.get_cards(id=update)[0]
 
     # Update cache
     session['alternatives'][idx] = scryfall.recommend_print(entry, mode="choices")
