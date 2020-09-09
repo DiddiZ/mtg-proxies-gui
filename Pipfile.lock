@@ -177,7 +177,7 @@
         "mtg-proxies": {
             "editable": true,
             "git": "ssh://git@github.com/DiddiZ/mtg-proxies.git",
-            "ref": "47f4d6c383ceaf96bc716c9d906f16ac86266889"
+            "ref": "73931b0385f38520d07e6eb88ffce9e15803e0bb"
         },
         "numpy": {
             "hashes": [
