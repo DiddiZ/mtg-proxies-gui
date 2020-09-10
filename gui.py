@@ -17,6 +17,7 @@ def start():
         decklist_file = request.files['decklist_file']
         if decklist_file.filename != '':
             decklist, ok, warnings = parse_decklist_stream(TextIOWrapper(decklist_file))
+            session['decklist_name'] = decklist_file.filename
         elif request.form['decklist'] != '':
             decklist, ok, warnings = parse_decklist_stream(StringIO(request.form['decklist']))
         else:
@@ -125,10 +126,13 @@ def download():
     if 'decklist' not in session:
         return redirect(url_for("start"))
 
-    return render_template(
-        'download.html',
-        decklist=format(session['decklist'], "arena"),
-        decklist_ok=True,
+    file_name = session.get('decklist_name', "decklist.txt")
+    return Response(
+        [format(session['decklist'], "arena")],
+        mimetype="text/plain",
+        headers={
+            "Content-Disposition": f"attachment;filename={file_name}",
+        },
     )
 
 

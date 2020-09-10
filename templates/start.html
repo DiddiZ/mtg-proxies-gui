@@ -35,7 +35,6 @@
 {% block main %}
 <main>
 	<form class="deckupload" method="post" enctype=multipart/form-data style="margin: auto; max-width: 800px;">
-		<h1>Paste, drop or choose decklist</h1>
 		{% if errors -%}
 		<div class="alert">
 			<strong>ERROR:</strong>
@@ -56,7 +55,7 @@
 			</ul>
 		</div>
 		{% endif -%}
-		<textarea id="decklist" name="decklist">{{ decklist }}</textarea>
+		<textarea id="decklist" name="decklist" placeholder="Paste, drag&drop or choose decklist">{{ decklist }}</textarea>
 		<div style="display:flex; justify-content:space-between;">
 			<input type="file" id="decklist_file" name="decklist_file" accept=".txt" onchange="form.submit()">
 			<button>Submit</button>
