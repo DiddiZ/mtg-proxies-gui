@@ -177,3 +177,48 @@ main {
 .alert.warning {
   background-color: #ff9800;
 }
+
+.printform {
+  margin: auto;
+  max-width: 600px;
+  display: flex;
+  flex-flow: column nowrap;
+  font-family: sans-serif;
+}
+
+.printform .row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 12px 0 14px 0;
+}
+
+.printform .row + .row {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.printform .row .label {
+  color: #16161d;
+  height: 48px;
+  min-width: 180px;
+  padding: 0 8px 0 0;
+  display: flex;
+  align-items: center;
+}
+.printform .row .textfield {
+  color: #343242;
+  max-width: 100%;
+  background-color: #fefefe;
+  border-radius: 2px;
+  border: 1px solid #aeaeae;
+  font-size: 16px;
+  height: 38px;
+  padding: 8px 10px;
+}
+.printform .row .tip {
+  width: 100%;
+  margin: 2px 0 0 0;
+  font-size: 12px;
+  color: #9b9b9b;
+  font-style: italic;
+}

@@ -12,6 +12,7 @@
     <a class="naventry" href="start"><i class="far fa-list-alt fa-fw"></i></a>
     <a class="naventry{% if not decklist_ok %} disabled{% endif %}" href="show"><i class="far fa-images fa-fw"></i></a>
     <a class="naventry{% if not decklist_ok %} disabled{% endif %}" href="download"><i class="fas fa-download fa-fw"></i></a>
+    <a class="naventry{% if not decklist_ok %} disabled{% endif %}" href="print"><i class="fas fa-print"></i></a>
   </nav>
   <body>
     {% block main %}{% endblock -%}

@@ -1,0 +1,34 @@
+{% extends "layout.html" %} {% block main %}
+<main>
+  <form class="printform" method="post">
+    <div class="row">
+      <label class="label" for="paper">Paper size</label>
+      <input class="textfield" type="text" id="paper" name="paper" value="A4" />
+      <p class="tip">Size of the designated printing paper. Either use default A4 format or specify WIDTHxHEIGHT in mm.</p>
+    </div>
+    <div class="row">
+      <label class="label" for="dpi">DPI</label>
+      <input class="textfield" type="number" id="dpi" name="dpi" min="0" step="any" value="300" />
+      <p class="tip">DPI resolution of generated file(s). 300 is the recommended minimum for printing. 450 or 600 results in higher quality, but also increases computation time and file size.</p>
+    </div>
+    <div class="row">
+      <label class="label" for="scale">Scale</label>
+      <input class="textfield" type="number" id="scale" name="scale" min="0" step="any" value="1.0" />
+      <p class="tip">The the scale to correct for inaccuracues of your printing system, e.g. many photo printing services slightly upscale the images.</p>
+    </div>
+    <div class="row">
+      <label class="label" for="bordercrop">Border cropping</label>
+      <input class="textfield" type="number" id="bordercrop" name="bordercrop" min="0" step="1" value="14" />
+      <p class="tip">How many pixels to crop the scans at their borders. This reduces the size of the printed proxies, but this removes the rounded corners and allows to use straight cuts.</p>
+    </div>
+    <div class="row">
+      <label class="label" for="background">Background</label>
+      <input class="textfield" type="color" id="background" name="background" value="#ffffff" />
+      <p class="tip">Color of the background. White is default to save ink, but #181410 can also be sensible to match black bordered cards when border crop is zero.</p>
+    </div>
+    <div class="row" style="justify-content: flex-end">
+      <input class="textfield" type="submit" />
+    </div>
+  </form>
+</main>
+{% endblock %}

@@ -136,6 +136,23 @@ def download():
     )
 
 
+@app.route('/print', methods=['GET', 'POST'])
+def prepare_pdf():
+    if 'decklist' not in session:
+        return redirect(url_for("start"))
+
+    if request.method == 'POST':
+        paper = request.values['paper']
+        paper = request.values['paper']
+
+        print("Paper", paper)
+
+    return render_template(
+        'print.html',
+        decklist_ok=True,
+    )
+
+
 if __name__ == "__main__":
     import os
     import argparse
