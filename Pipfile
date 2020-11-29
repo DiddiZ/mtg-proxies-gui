@@ -10,6 +10,7 @@ yapf = "*"
 [packages]
 mtg-proxies = {editable = true, git = "git@github.com:DiddiZ/mtg-proxies.git"}
 flask = "*"
+numpy = "!=1.19.4"
 
 [requires]
 python_version = "3.8"
